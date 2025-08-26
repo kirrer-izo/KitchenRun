@@ -40,19 +40,31 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         {({ processing, recentlySuccessful, errors }) => (
                             <>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name">Name</Label>
-
+                                    <Label htmlFor="first_name">First Name</Label>
                                     <Input
-                                        id="name"
+                                        id="first_name"
                                         className="mt-1 block w-full"
-                                        defaultValue={auth.user.name}
-                                        name="name"
+                                        defaultValue={String(auth.user.first_name)}
+                                        name="first_name"
                                         required
-                                        autoComplete="name"
-                                        placeholder="Full name"
+                                        autoComplete="given-name"
+                                        placeholder="First name"
                                     />
+                                    <InputError className="mt-2" message={errors.first_name} />
+                                </div>
 
-                                    <InputError className="mt-2" message={errors.name} />
+                                <div className="grid gap-2">
+                                    <Label htmlFor="last_name">Last Name</Label>
+                                    <Input
+                                        id="last_name"
+                                        className="mt-1 block w-full"
+                                        defaultValue={String(auth.user.last_name)}
+                                        name="last_name"
+                                        required
+                                        autoComplete="family-name"
+                                        placeholder="Last name"
+                                    />
+                                    <InputError className="mt-2" message={errors.last_name} />
                                 </div>
 
                                 <div className="grid gap-2">
