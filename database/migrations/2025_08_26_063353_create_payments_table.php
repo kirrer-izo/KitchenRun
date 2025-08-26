@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('amount');
             $table->string('payment_method');
             $table->string('status');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

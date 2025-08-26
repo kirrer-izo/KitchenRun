@@ -17,6 +17,7 @@ return new class extends Migration
             //FK menu_id
             $table->string('quantity');
             $table->decimal('price', 8,2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
