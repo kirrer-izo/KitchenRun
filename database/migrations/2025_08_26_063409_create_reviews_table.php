@@ -18,6 +18,7 @@ return new class extends Migration
             //FK order_id
             $table->enum('rating', [1,2,3,4,5])->nullable();
             $table->string('comment')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

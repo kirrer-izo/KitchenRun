@@ -66,6 +66,19 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     />
                                     <InputError className="mt-2" message={errors.last_name} />
                                 </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="username">UserName</Label>
+                                    <Input
+                                        id="username"
+                                        className="mt-1 block w-full"
+                                        defaultValue={String(auth.user.username)}
+                                        name="username"
+                                        required
+                                        autoComplete="username"
+                                        placeholder="User name"
+                                    />
+                                    <InputError className="mt-2" message={errors.username} />
+                                </div>
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="email">Email address</Label>
@@ -105,6 +118,33 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         )}
                                     </div>
                                 )}
+                                <div className="grid gap-2">
+                                    <Label htmlFor="phone">Phone Number</Label>
+                                    <Input
+                                        id="phone"
+                                        className="mt-1 block w-full"
+                                        defaultValue={String(auth.user.phone)}
+                                        name="phone"
+                                        required
+                                        autoComplete="phone"
+                                        placeholder="Phone number"
+                                    />
+                                    <InputError className="mt-2" message={errors.phone} />
+                                </div>
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="address">Adress</Label>
+                                    <Input
+                                        id="address"
+                                        className="mt-1 block w-full"
+                                        defaultValue={String(auth.user.address)}
+                                        name="address"
+                                        required
+                                        autoComplete="address"
+                                        placeholder="Address"
+                                    />
+                                    <InputError className="mt-2" message={errors.address} />
+                                </div>
 
                                 <div className="flex items-center gap-4">
                                     <Button disabled={processing}>Save</Button>

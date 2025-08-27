@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -48,6 +49,12 @@ class ProfileController extends Controller
         $request->validate([
             'password' => ['required', 'current_password'],
         ]);
+
+        if (! Hash::check($request->password, $request->user()->password)) {
+            return back()->withErrors([
+                'password' => __('The provided password is incorrect.'),
+            ]);
+        }
 
         $user = $request->user();
 

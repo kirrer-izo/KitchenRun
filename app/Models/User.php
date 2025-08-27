@@ -19,6 +19,8 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    protected $dates = ['deleted_at'];
     protected $fillable = [
         'first_name',
         'last_name',
@@ -27,7 +29,8 @@ class User extends Authenticatable
         'password',
         'phone',
         'address',
-        'status'
+        'status',
+        'role'
     ];
 
     /**

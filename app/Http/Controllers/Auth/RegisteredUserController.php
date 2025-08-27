@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -33,14 +34,24 @@ class RegisteredUserController extends Controller
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'username' => ['required', 'string', 'max:255', Rule::unique('users','username')->whereNull('deleted_at')],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users','email')->whereNull('deleted_at')],
+            'phone' => ['required', 'string', 'max:20'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'status' => ['in:active,inactive'],
+            'role' => ['required', 'string', 'in:user,admin'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'email' => $request->email,
+            'username' => $request->username,
+            'email' => strtolower($request->email),
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'status' => $request->status,
+            'role' => $request->role,
             'password' => Hash::make($request->password),
         ]);
 
@@ -48,6 +59,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended(route('dashboard', absolute: false));
+       return redirect()->route('dashboard');
+
+
     }
 }

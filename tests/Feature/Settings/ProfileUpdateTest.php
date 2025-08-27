@@ -20,9 +20,15 @@ test('profile information can be updated', function () {
     $response = $this
         ->actingAs($user)
         ->patch('/settings/profile', [
-            'first_name' => 'Test',
-            'last_name' => 'User',
-            'email' => 'test@example.com',
+        'first_name' => 'Test',
+        'last_name' => 'User',
+        'username' => 'testuser',
+        'email' => 'test@example.com',
+        'phone' => '0712345678',
+        'address' => 'Nakuru, Kenya',
+        'role' => 'user',
+        'password' => 'password',
+        'password_confirmation' => 'password',
         ]);
 
     $response
@@ -33,7 +39,11 @@ test('profile information can be updated', function () {
 
     expect($user->first_name)->toBe('Test');
     expect($user->last_name)->toBe('User');
+    expect($user->username)->toBe('testuser');
     expect($user->email)->toBe('test@example.com');
+    expect($user->phone)->toBe('0712345678');
+    expect($user->address)->toBe('Nakuru, Kenya');
+    expect($user->role)->toBe('user');
     expect($user->email_verified_at)->toBeNull();
 });
 
@@ -42,10 +52,16 @@ test('email verification status is unchanged when the email address is unchanged
 
     $response = $this
         ->actingAs($user)
-        ->patch('/settings/profile', [
-            'first_name' => 'Test',
-            'last_name' => 'User',
-            'email' => $user->email,
+        ->patch('/settings/profile', [           
+        'first_name' => 'Test',
+        'last_name' => 'User',
+        'username' => 'testuser',
+        'email' => $user->email,
+        'phone' => $user->phone,
+        'address' => $user->address,
+        'role' => $user->role,
+        'password' => 'password',
+        'password_confirmation' => 'password',
         ]);
 
     $response
@@ -69,7 +85,7 @@ test('user can delete their account', function () {
         ->assertRedirect('/');
 
     $this->assertGuest();
-    expect($user->fresh())->toBeNull();
+    expect($user->fresh()->deleted_at)->not->toBeNull();
 });
 
 test('correct password must be provided to delete account', function () {
@@ -86,5 +102,6 @@ test('correct password must be provided to delete account', function () {
         ->assertSessionHasErrors('password')
         ->assertRedirect('/settings/profile');
 
-    expect($user->fresh())->not->toBeNull();
+    expect($user->fresh()->deleted_at)->toBeNull();
+
 });

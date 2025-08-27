@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('status');
             $table->dateTime('delivered_at')->nullable();
             $table->string('location');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
