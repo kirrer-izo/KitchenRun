@@ -65,4 +65,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Review::class);
     }
+
+    public function redirectToDashboard()
+    {
+        return match($this->role) {
+            'manager' => route('manager.dashboard'),
+            'customer' => route('customer.dashboard'),
+            'driver' => route('driver.dashboard'),
+            'kitchen' => route('kitchen.dashboard'),
+            default => dd('Role not defined'),
+        };
+    }
 }

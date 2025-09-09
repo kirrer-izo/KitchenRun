@@ -31,7 +31,11 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $request->merge([
+            'status' => $request->input('status', 'active'),
+            'role' => $request->input('role', 'customer')
+        ]);
+       $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'username' => ['required', 'string', 'max:255', Rule::unique('users','username')->whereNull('deleted_at')],
@@ -39,7 +43,7 @@ class RegisteredUserController extends Controller
             'phone' => ['required', 'string', 'max:20'],
             'address' => ['nullable', 'string', 'max:255'],
             'status' => ['in:active,inactive'],
-            'role' => ['required', 'string', 'in:user,admin'],
+            'role' => ['required', 'string', 'in:customer,admin,manager,driver,kitchen'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -58,9 +62,21 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-
-       return redirect()->route('dashboard');
-
+        
+        // if(Auth::user()->role === 'manager'){
+        //     return redirect()->route('dashboard');
+        // }elseif(Auth::user()->role === 'customer'){
+        //     return redirect()->route('customer.dashboard');
+        //     // dd('Cant find route');
+        // }elseif(Auth::user()->role === 'driver'){
+        //     return redirect()->route('driver.dashboard');
+        // }elseif(Auth::user()->role === 'kitchen'){
+        //     return redirect()->route('kitchen.dashboard');
+        // }else{
+            
+        //     dd('Role not defined');
+        // }
+        return redirect(Auth::user()->redirectToDashboard());
 
     }
 }
