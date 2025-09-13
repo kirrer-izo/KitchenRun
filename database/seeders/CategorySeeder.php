@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Category;
+use App\Enums\MenuCategory;
 use Illuminate\Database\Seeder;
+use Database\Factories\CategoryFactory;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class CategorySeeder extends Seeder
 {
@@ -12,6 +15,10 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        foreach (MenuCategory::cases() as $category){
+            Category::factory()->create([
+                'name' => $category->value,
+            ]);
+        }
     }
 }
