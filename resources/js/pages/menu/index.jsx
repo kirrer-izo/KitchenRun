@@ -2,32 +2,32 @@ import { Head, Link } from "@inertiajs/react";
 import React from "react";
 import Layout from "../../layouts/app-layout";
 
-const index = () => {
+const index = ({menus}) => {
     return (
         <>
         <Head title="Menu Index"/>
         <div className="max-w-6xl mx-auto py-12 px-6">
             <h1 className="text-3xl font-bold mb-8 text-gray-800">Menu</h1>
-
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="bg-white shadow-md rounded-2xl overflow-hidden border">
-                    <img className="w-full h-40 object-cover"/>
+            {menus.map(menu => (
+                <div key={menu.id} className="bg-white shadow-md rounded-2xl overflow-hidden border">
+                    <img className="w-full h-40 object-cover" src={menu.image_path} alt={menu.name}/>
 
                     <div className="p-4">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-2">Menu Title</h2>
-                        <p className="text-gray-600 text-sm mb-3">Menu Description</p>
+                        <h2 className="text-xl font-semibold text-gray-900 mb-2">{menu.name}</h2>
+                        <p className="text-gray-600 text-sm mb-3">{menu.description}</p>
                         <p className="text-sm">
-                            <span className="font-medium">Category:</span>
+                            <span className="font-medium">Category: {menu.category.name}</span>
                         </p>
                             <p className="text-sm">
                                 <span className="font-medium">Availability:</span>{" "}
-                               
-                                <span className="text-green-600">Available</span>
-                          
-                                {/* <span className="text-red-500">Not Available</span> */}
-               
+                               {menu.is_available ?(
+                                   <span className="text-green-600">Available</span>
+                               ): (
+                                   <span className="text-red-500">Not Available</span>
+                               )}
                             </p>
-                            <p className="text-lg font-bold text-indigo-600 mt-2">Price</p>
+                            <p className="text-lg font-bold text-indigo-600 mt-2">{menu.price}</p>
                             <div className="mt-4">
                                 <Link href="#" className="text-indigo-500 hover:underline text-sm">View Details</Link>
                             </div>
@@ -35,7 +35,9 @@ const index = () => {
                     </div>
 
                 </div>
-            </div>
+
+             ))}
+                </div>
         </div>
         </>
     )

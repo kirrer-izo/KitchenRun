@@ -13,7 +13,10 @@ class MenuController extends Controller
      */
     public function index()
     {
-        //
+        $menus = Menu::with('category')->orderBy('category_id')->get();
+        return inertia('menu/index', [
+            'menus' => $menus
+        ]);
     }
 
     /**
